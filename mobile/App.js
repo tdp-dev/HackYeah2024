@@ -17,15 +17,15 @@ import {
 
 
 
-export type WayPoint = {
-  lat: number;
-  lon:  number;
-}
+// export type WayPoint = {
+//   lat: number;
+//   lon:  number;
+// }
 
-export interface Params {
-  start: WayPoint,
-  target: WayPoint,
-}
+// export interface Params {
+//   start: WayPoint,
+//   target: WayPoint,
+// }
 
 
 function App() {
