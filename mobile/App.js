@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Polyline } from 'react-native-maps';
+import MapRoute from './src/components/MapRoute';
 
 function App() {
   const [region, setRegion] = useState({
@@ -20,7 +21,7 @@ function App() {
   ]
 
   const minimalStrokeWidth = 2
-  const strokeWidth = 0.03/region.latitudeDelta > minimalStrokeWidth ? 0.03/region.latitudeDelta : minimalStrokeWidth
+  const strokeWidth = 0.03 / region.latitudeDelta > minimalStrokeWidth ? 0.03 / region.latitudeDelta : minimalStrokeWidth
 
   return (
     <View style={styles.container}>
@@ -29,15 +30,7 @@ function App() {
         region={region}
         onRegionChangeComplete={(newRegion) => setRegion(newRegion)} 
       >
-        <Polyline 
-          coordinates={coordinates}
-          strokeColor="#000" 
-          strokeWidth={strokeWidth}
-          lineCap='round'
-          lineJoin='round'
-        >
-
-        </Polyline>
+        <MapRoute strokeWidth={strokeWidth} coordinates={coordinates}></MapRoute>
       </MapView>
     </View>
   );
