@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { StyleSheet, View, Text, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Pressable, Image } from 'react-native';
 
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import MapRoute from './src/components/MapRoute';
@@ -21,6 +21,7 @@ import {
   fetchPointVerboseName,
   fetchRoute,
 } from "./requests"
+import MapWarningMarker from './src/components/MapWarningMarker';
 
 const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -105,6 +106,7 @@ function App() {
         onRegionChangeComplete={(newRegion) => setRegion(newRegion)} 
       >
         <MapRoute strokeWidth={strokeWidth} coordinates={coordinates}></MapRoute>
+        <MapWarningMarker coordinate={{latitude: 50.058411021726435, longitude: 19.93}} />
       </MapView>
 <BottomSheet isOpen={isOpen} toggleSheet={toggleSheet}>
         <Animated.Text style={contentStyle}>
