@@ -10,5 +10,12 @@ services:
     container_name: pocketbase
     ports:
       - "30164:8080"
+  valhalla:
+    image: ghcr.io/gis-ops/docker-valhalla/valhalla:latest
+    container_name: valhalla_gis-ops
+    ports:
+      -  "8002:8002"
+    volumes:
+      - ./custom_files:/custom_files/
 volumes:
   pb_data:
