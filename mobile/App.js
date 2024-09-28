@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState, useRef, useCallback } from 'react';
+import { StyleSheet, View, Text, Pressable } from 'react-native';
 
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import MapRoute from './src/components/MapRoute';
 import { useEffect } from "react";
 import axios from "axios";
 import PocketBase from 'pocketbase'
+import BottomSheet from './src/components/BottomSheet';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  useDerivedValue,
+  withDelay,
+  withTiming,
+} from 'react-native-reanimated';
 
 import {
   createAlert,
@@ -14,8 +22,13 @@ import {
   fetchRoute,
 } from "./requests"
 
+const bottomSheetRef = useRef<BottomSheet>(null);
 
 
+  // callbacks
+//const handleSheetChanges = useCallback((index: number) => {
+  //console.log('handleSheetChanges', index);
+//}, []);
 
 export type WayPoint = {
   lat: number;
@@ -30,11 +43,23 @@ export interface Params {
 
 function App() {
 
+  const isOpen = useSharedValue(false);
+
+  const toggleSheet = () => {
+    isOpen.value = !isOpen.value;
+  };
+
+  const contentStyle = {
+    color: '#001a72',
+    textDecorationColor: '#001a72'
+  };
+
   useEffect(() => {
     const start = {"lat": 50.072159, "lon": 19.981695};
     const target = {"lat": 50.072159, "lon": 19.981695};
 
     fetchPointVerboseName(start);
+    toggleSheet();
     const test = async () => { 
       //console.log({alerts: await fetchAlerts()})
       const data = {
@@ -81,6 +106,32 @@ function App() {
       >
         <MapRoute strokeWidth={strokeWidth} coordinates={coordinates}></MapRoute>
       </MapView>
+<BottomSheet isOpen={isOpen} toggleSheet={toggleSheet}>
+        <Animated.Text style={contentStyle}>
+          Discover the indispensable convenience of a bottom sheet in mobile
+          app. Seamlessly integrated, it provides quick access to supplementary
+          features and refined details.
+          Discover the indispensable convenience of a bottom sheet in mobile
+          app. Seamlessly integrated, it provides quick access to supplementary
+          features and refined details.
+          Discover the indispensable convenience of a bottom sheet in mobile
+          app. Seamlessly integrated, it provides quick access to supplementary
+          features and refined details.
+          Discover the indispensable convenience of a bottom sheet in mobile
+          app. Seamlessly integrated, it provides quick access to supplementary
+          features and refined details.
+          Discover the indispensable convenience of a bottom sheet in mobile
+          app. Seamlessly integrated, it provides quick access to supplementary
+          features and refined details.
+        </Animated.Text>
+        <View style={styles.buttonContainer}>
+          <Pressable style={[styles.bottomSheetButton]}>
+            <Text style={[styles.bottomSheetButtonTex]}>
+              Read more
+            </Text>
+          </Pressable>
+        </View>
+      </BottomSheet>
     </View>
   );
 };
