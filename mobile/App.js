@@ -1,16 +1,65 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import MapView, { Polyline } from 'react-native-maps';
+
+import MapView, { Polyline, Marker } from 'react-native-maps';
 import MapRoute from './src/components/MapRoute';
+import { useEffect } from "react";
+import axios from "axios";
+import PocketBase from 'pocketbase'
+
+import {
+  createAlert,
+  fetchAlerts,
+  fetchPointVerboseName,
+  fetchRoute,
+} from "./requests"
+
+
+
+
+export type WayPoint = {
+  lat: number;
+  lon:  number;
+}
+
+export interface Params {
+  start: WayPoint,
+  target: WayPoint,
+}
+
 
 function App() {
+
+  useEffect(() => {
+    const start = {"lat": 50.072159, "lon": 19.981695};
+    const target = {"lat": 50.072159, "lon": 19.981695};
+
+    fetchPointVerboseName(start);
+    const test = async () => { 
+      //console.log({alerts: await fetchAlerts()})
+      const data = {
+        "Name": "another test",
+        "Type": "Danger road",
+        "lat": 123,
+        "lon": 123
+      };
+      await createAlert(data);
+      //console.log({route: await fetchRoute({start, target})});
+      //console.log({point: await fetchPointVerboseName(start)});
+    };
+    test()
+  }, []);
+
+
+
+  // State to manage the region
   const [region, setRegion] = useState({
     latitude: 50.071, 
     latitudeDelta: 0.736, 
     longitude: 19.924,
     longitudeDelta: 0.583
   });
-
+  
   const coordinates = [
     {latitude: 50.058411021726435, longitude: 19.939532831423723},
     {latitude: 50.061689609947265, longitude: 19.93896261951241},
