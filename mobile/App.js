@@ -30,15 +30,15 @@ const bottomSheetRef = useRef<BottomSheet>(null);
   //console.log('handleSheetChanges', index);
 //}, []);
 
-export type WayPoint = {
-  lat: number;
-  lon:  number;
-}
+// export type WayPoint = {
+//   lat: number;
+//   lon:  number;
+// }
 
-export interface Params {
-  start: WayPoint,
-  target: WayPoint,
-}
+// export interface Params {
+//   start: WayPoint,
+//   target: WayPoint,
+// }
 
 
 function App() {
