@@ -1,6 +1,7 @@
 /// <reference path="../pb_data/types.d.ts" />
+/// <reference path="../pb_data/types.d.ts" />
 migrate((db) => {
- db.collection('posts').create({
+  const collection = new Collection({
     name: 'posts',
     schema: [
       {
@@ -15,6 +16,10 @@ migrate((db) => {
       }
     ]
   });
+
+  return db.dao.saveCollection(collection);
 }, (db) => {
-  // add down queries...
-})
+  const collection = db.dao.findCollectionByNameOrId('posts');
+  return db.dao.deleteCollection(collection);
+});
+
