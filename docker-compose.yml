@@ -1,0 +1,12 @@
+services:
+  api:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - pb_data:/pb/pb_data
+    ports:
+      - "30164:8080"
+
+volumes:
+  pb_data:
