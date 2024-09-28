@@ -5,8 +5,17 @@ services:
       dockerfile: Dockerfile
     volumes:
       - pb_data:/pb/pb_data
+    container_name: pocketbase
     ports:
       - "30164:8080"
-
+  watchtower:
+      image: containrrr/watchtower
+      command: pocketbase 
+      restart: always
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+      environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=120
 volumes:
   pb_data:
