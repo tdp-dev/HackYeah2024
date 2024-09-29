@@ -26,11 +26,11 @@ const styles = StyleSheet.create({
   }
 });
 
-function CustomButton({iconPath, isActive, onPress, children}) {
+function CustomButton({iconPath, isActive, onPress, children, backgroundColor = "#FFFFFF", color = "#000000"}) {
   return (
     <Pressable onPress={onPress}>
-      <View style={[styles.container, isActive && {backgroundColor: "#F56A3E"}]}>
-        <Text style={styles.label}>{ children }</Text>
+      <View style={[ styles.container, {backgroundColor: backgroundColor}, isActive && {backgroundColor: backgroundColor}]}>
+        <Text style={[styles.label, {color: color}]}>{ children }</Text>
         <Image source={iconPath} />
       </View>
     </Pressable>

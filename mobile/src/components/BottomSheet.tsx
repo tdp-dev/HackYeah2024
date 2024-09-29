@@ -59,7 +59,7 @@ const sheetStyles = StyleSheet.create({
   sheet: {
     paddingRight: 20,
     paddingLeft: 20,
-    height: 150,
+    height: 560,
     width: '100%',
     position: 'absolute',
     bottom: 0,
