@@ -9,6 +9,7 @@ import Animated, {
 import { StyleSheet, View, Text, Pressable, SafeAreaView, Image } from 'react-native';
 import CustomBtn from "./CustomBtn";
 import { useMarkers } from './MarkersProvider';
+import { fetchRoute } from '../requests';
 
 const styles = StyleSheet.create({
   title: {
@@ -64,7 +65,20 @@ const bikeTypeOptions = [
 
 function RoutingOptions() {
   const isOpen = useSharedValue(true);
-  const { startMarker, setStartMarker, endMarker, setEndMarker } = useMarkers();
+  const { startMarker, setStartMarker, endMarker, setEndMarker, route, setRoute } = useMarkers();
+  async function getRoute() {
+    const filter = {
+      bicycle_type: "Road",
+      use_roads: true,
+      use_hills: false,
+      use_living_streets: false,
+      avoid_bad_surfaces: true,
+      shortest: true
+    }
+
+    const fetchedRoute = await fetchRoute({start: {lon: startMarker.longitude, lat: startMarker.latitude}, target: {lon: endMarker.longitude, lat: endMarker.latitude}, filter: null});
+    setRoute(fetchedRoute.waypoints)
+  }
 
   const toggleSheet = () => {
     isOpen.value = !isOpen.value;
@@ -119,7 +133,11 @@ function RoutingOptions() {
           <CustomBtn iconPath={require("../../assets/Settings.png")}>Ustawienia trasy</CustomBtn>
         </View>
         <View style={styles.btnWrapper}>
-          <CustomBtn iconPath={require("../../assets/Arrow.png")} backgroundColor='#F56A3E' color='#FFFFFF'>Wyznacz trasę</CustomBtn>
+          <CustomBtn 
+            iconPath={require("../../assets/Arrow.png")} 
+            backgroundColor='#F56A3E' 
+            color='#FFFFFF'
+            onPress={getRoute}>Wyznacz trasę</CustomBtn>
         </View>
       </View>
     </BottomSheet>

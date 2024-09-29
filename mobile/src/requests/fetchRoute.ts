@@ -26,16 +26,16 @@ const fetchRoute = async ({start, target, filter}) => {
         { "lat": 50.067395, "lon": 19.982695 }
       ],
       "costing": "bicycle",
-      "costing_options": {
-        "bicycle": filter
-      },
+      // "costing_options": {
+      //   "bicycle": filter
+      // },
       "units": "kilometers",
       "id": "my_work_route"
     });
 
     const data = response.data;
     const shape = data.trip.legs[0].shape;
-    const containsUnpavedRoads = false;
+    let containsUnpavedRoads = false;
     data.trip.legs.forEach(l => {
       if (l.rough) {
         containsUnpavedRoads = true;
