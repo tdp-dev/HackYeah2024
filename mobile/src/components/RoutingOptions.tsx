@@ -8,6 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { StyleSheet, View, Text, Pressable, SafeAreaView, Image } from 'react-native';
 import CustomBtn from "./CustomBtn";
+import { useMarkers } from './MarkersProvider';
 
 const styles = StyleSheet.create({
   title: {
@@ -29,6 +30,31 @@ const styles = StyleSheet.create({
   },
   btnWrapper: {
     width: "48%",
+  },
+  bikeTypeContainer: {
+    width: '100%',
+    height: 240,
+    backgroundColor: '#E7E7E7',
+    borderRadius: 10,
+    marginVertical: 20,
+    justifyContent: 'space-evenly',
+  },
+  bikeTypeRow: {
+    flexDirection: 'row',
+    width: '100%',
+    height: '40%',
+    justifyContent: 'space-evenly',
+  },
+  bikeType: {
+    width: '44%',
+    height: '100%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    padding: 10
+  },
+  bikeTypeTitle: {
+    fontSize: 18,
+    marginTop: 5,
   }
 });
 
@@ -38,6 +64,7 @@ const bikeTypeOptions = [
 
 function RoutingOptions() {
   const isOpen = useSharedValue(true);
+  const { startMarker, setStartMarker, endMarker, setEndMarker } = useMarkers();
 
   const toggleSheet = () => {
     isOpen.value = !isOpen.value;
@@ -64,6 +91,36 @@ function RoutingOptions() {
       </View>
       <View style={styles.title}>
         <Text style={styles.h2}>Rodzaj roweru</Text>
+      </View>
+      <View style={styles.bikeTypeContainer}>
+        <View style={styles.bikeTypeRow}>
+          <View style={styles.bikeType}>
+            <Image source={require('./../../assets/Bike_black.png')} />
+            <Text style={styles.bikeTypeTitle}>Rower szosowy</Text>
+          </View>
+          <View style={styles.bikeType}>
+            <Image source={require('./../../assets/City_black.png')} />
+            <Text style={styles.bikeTypeTitle}>Rower miejski</Text>
+          </View>
+        </View>
+        <View style={styles.bikeTypeRow}>
+          <View style={styles.bikeType}>
+            <Image source={require('./../../assets/Forest_black.png')} />
+            <Text style={styles.bikeTypeTitle}>Rower crossowy</Text>
+          </View>
+          <View style={styles.bikeType}>
+            <Image source={require('./../../assets/Mountain_black.png')} />
+            <Text style={styles.bikeTypeTitle}>Rower górski</Text>
+          </View>
+        </View>
+      </View>
+      <View style={styles.points}>
+        <View style={styles.btnWrapper}>
+          <CustomBtn iconPath={require("../../assets/Settings.png")}>Ustawienia trasy</CustomBtn>
+        </View>
+        <View style={styles.btnWrapper}>
+          <CustomBtn iconPath={require("../../assets/Arrow.png")} backgroundColor='#F56A3E' color='#FFFFFF'>Wyznacz trasę</CustomBtn>
+        </View>
       </View>
     </BottomSheet>
   )

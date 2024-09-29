@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { StyleSheet, View, Text, Pressable, SafeAreaView, Image } from 'react-native';
+import { shadow } from "../utils"
 
 const styles = StyleSheet.create({
   container: {
@@ -18,14 +19,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: "row",
-    height: 40,
+    height: 48,
     flexGrow: 1,
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 24,
+    paddingRight: 24,
+    ...shadow,
   },
   profile: {
-    height: 48,
-    width: 48,
+    top: -4,
+    height: 56,
+    width: 56,
     marginLeft: 5,
     marginBottom: 20,
   }

@@ -7,6 +7,35 @@ import MapView, { Polyline, Marker } from 'react-native-maps';
 import MapRoute from './src/components/MapRoute';
 import DefaultLayout from "./src/components/DefaultLayout"
 import { useEffect } from "react";
+import ContextMenu from './src/components/ContextMenu';
+import RoutingOptions from './src/components/RoutingOptions';
+import TopBar from './src/components/TopBar';
+import { MarkersProvider } from './src/components/MarkersProvider';
+
+//import {
+  //createAlert,
+  //fetchAlerts,
+  //fetchPointVerboseName,
+  //fetchRoute,
+//} from "./requests"
+import MapWarningMarker from './src/components/MapWarningMarker';
+
+
+
+  // callbacks
+//const handleSheetChanges = useCallback((index: number) => {
+  //console.log('handleSheetChanges', index);
+//}, []);
+
+// export type WayPoint = {
+//   lat: number;
+//   lon:  number;
+// }
+
+// export interface Params {
+//   start: WayPoint,
+//   target: WayPoint,
+// }
 
 const styles = StyleSheet.create({
   container: {
@@ -78,19 +107,21 @@ function App() {
   };
 
   return (
-    <View style={styles.container}>
-      <MapView
-        style={styles.map}
-        region={region}
-        onRegionChangeComplete={(newRegion) => setRegion(newRegion)} 
-        onLongPress={handleLongPress}
-      >
-        { marker }
-        <MapRoute strokeWidth={strokeWidth} coordinates={coordinates}></MapRoute>
-      </MapView>
-      { !markerPos && <DefaultLayout />}
-      { markerPos && <CreateAlert coordinates={markerPos} /> }
-    </View>
+    <MarkersProvider>
+      <View style={styles.container}>
+        <MapView
+          style={styles.map}
+          region={region}
+          onRegionChangeComplete={(newRegion) => setRegion(newRegion)} 
+          onLongPress={handleLongPress}
+        >
+          { marker }
+          <MapRoute strokeWidth={strokeWidth} coordinates={coordinates}></MapRoute>
+        </MapView>
+        { !markerPos && <DefaultLayout />}
+        { markerPos && <CreateAlert coordinates={markerPos} /> }
+      </View>
+    </MarkersProvider>
   );
 };
 
