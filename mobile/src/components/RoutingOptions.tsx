@@ -8,6 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { StyleSheet, View, Text, Pressable, SafeAreaView, Image } from 'react-native';
 import CustomBtn from "./CustomBtn";
+import { useMarkers } from './MarkersProvider';
 
 const styles = StyleSheet.create({
   title: {
@@ -38,6 +39,7 @@ const bikeTypeOptions = [
 
 function RoutingOptions() {
   const isOpen = useSharedValue(true);
+  const { startMarker, setStartMarker, endMarker, setEndMarker } = useMarkers();
 
   const toggleSheet = () => {
     isOpen.value = !isOpen.value;

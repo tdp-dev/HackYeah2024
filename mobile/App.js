@@ -90,19 +90,21 @@ function App() {
   const strokeWidth = 0.03 / region.latitudeDelta > minimalStrokeWidth ? 0.03 / region.latitudeDelta : minimalStrokeWidth
 
   return (
-    <View style={styles.container}>
-      <TopBar />
-      <MapView
-        style={styles.map}
-        region={region}
-        onRegionChangeComplete={(newRegion) => setRegion(newRegion)} 
-      >
-        <MapRoute strokeWidth={strokeWidth} coordinates={coordinates}></MapRoute>
-        <MapWarningMarker coordinate={{latitude: 50.058411021726435, longitude: 19.93}} />
-      </MapView>
-      <ContextMenu />
-      <RoutingOptions />
-    </View>
+    <MarkersProvider>
+      <View style={styles.container}>
+        <TopBar />
+        <MapView
+          style={styles.map}
+          region={region}
+          onRegionChangeComplete={(newRegion) => setRegion(newRegion)} 
+          >
+          <MapRoute strokeWidth={strokeWidth} coordinates={coordinates}></MapRoute>
+          <MapWarningMarker coordinate={{latitude: 50.058411021726435, longitude: 19.93}} />
+        </MapView>
+        <ContextMenu />
+        <RoutingOptions />
+      </View>
+    </MarkersProvider>
   );
 };
 
