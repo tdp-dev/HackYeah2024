@@ -46,7 +46,10 @@ function BottomSheet({ isOpen, toggleSheet, duration = 500, children }) {
           height.value = e.nativeEvent.layout.height;
         }}
         style={[sheetStyles.sheet, sheetStyle, backgroundColorSheetStyle]}>
-        {children}
+        <View style={sheetStyles.lineWrapper}>
+          <View style={sheetStyles.line} />
+        </View>
+        <SafeAreaView>{children}</SafeAreaView>
       </Animated.View>
     </>
   );
@@ -54,23 +57,35 @@ function BottomSheet({ isOpen, toggleSheet, duration = 500, children }) {
 
 const sheetStyles = StyleSheet.create({
   sheet: {
-    padding: 16,
-    paddingRight: '2rem',
-    paddingLeft: '2rem',
+    paddingRight: 20,
+    paddingLeft: 20,
     height: 150,
     width: '100%',
     position: 'absolute',
     bottom: 0,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
+    backgroundColor: "#F4F4F4",
     zIndex: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
   },
   backdrop: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
+  lineWrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  line: {
+    width: 80,
+    height: 3,
+    backgroundColor: "#CCCCCC",
+    marginTop: 8,
+    marginBottom: 10,
+    borderRadius: 30,
+  }
 });
 
 const styles = StyleSheet.create({
