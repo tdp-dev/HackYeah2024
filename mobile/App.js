@@ -11,6 +11,7 @@ import ContextMenu from './src/components/ContextMenu';
 import RoutingOptions from './src/components/RoutingOptions';
 import TopBar from './src/components/TopBar';
 import { MarkersProvider } from './src/components/MarkersProvider';
+import { fetchAlerts } from "./src/requests"
 
 //import {
   //createAlert,
@@ -82,6 +83,22 @@ function App() {
   });
 
   const [markerPos, setMarkerPos] = useState(null);
+  const [alerts, setAlerts] = useState();
+
+  useEffect(() => {
+    const fetchAndSetAlerts = async () => {
+      try {
+        const fetchedAlerts = await fetchAlerts();
+        console.log({ fetchedAlerts });
+        setAlerts(fetchedAlerts);
+      } catch (error) {
+        console.error("Error fetching alerts:", error);
+      }
+    };
+
+    fetchAndSetAlerts(); // Call the function
+  }, []);
+
 
   const marker = useMemo(() => {
     if (markerPos) {
@@ -106,6 +123,11 @@ function App() {
     setMarkerPos({ lat: latitude, lon: longitude });
   };
 
+  function addNewAlert(alert) {
+    setAlerts(prev => [...prev, alert]);
+    setMarkerPos(null);
+  }
+
   return (
     <MarkersProvider>
       <View style={styles.container}>
@@ -116,10 +138,11 @@ function App() {
           onLongPress={handleLongPress}
         >
           { marker }
-          <MapRoute strokeWidth={strokeWidth} coordinates={coordinates}></MapRoute>
+          <MapRoute strokeWidth={strokeWidth} coordinates={coordinates} alerts={alerts} ></MapRoute>
+          
         </MapView>
         { !markerPos && <DefaultLayout />}
-        { markerPos && <CreateAlert coordinates={markerPos} /> }
+        { markerPos && <CreateAlert coordinates={markerPos} addNewAlert={addNewAlert} /> }
       </View>
     </MarkersProvider>
   );
