@@ -14,6 +14,7 @@ import {
   fetchPointVerboseName,
   fetchRoute,
 } from "./requests"
+import MapWarningMarker from './src/components/MapWarningMarker';
 
 
 
@@ -97,6 +98,7 @@ function App() {
         onRegionChangeComplete={(newRegion) => setRegion(newRegion)} 
       >
         <MapRoute strokeWidth={strokeWidth} coordinates={coordinates}></MapRoute>
+        <MapWarningMarker coordinate={{latitude: 50.058411021726435, longitude: 19.93}} />
       </MapView>
       <ContextMenu />
       <RoutingOptions />
