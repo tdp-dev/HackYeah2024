@@ -1,19 +1,12 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { StyleSheet, View, Text, Pressable, Image } from 'react-native';
+import { StyleSheet, View, Text, Pressable, SafeAreaView, Image } from 'react-native';
 
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import MapRoute from './src/components/MapRoute';
 import { useEffect } from "react";
-import axios from "axios";
-import PocketBase from 'pocketbase'
-import BottomSheet from './src/components/BottomSheet';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  useDerivedValue,
-  withDelay,
-  withTiming,
-} from 'react-native-reanimated';
+import ContextMenu from './src/components/ContextMenu';
+import RoutingOptions from './src/components/RoutingOptions';
+import TopBar from './src/components/TopBar';
 
 import {
   createAlert,
@@ -23,7 +16,6 @@ import {
 } from "./requests"
 import MapWarningMarker from './src/components/MapWarningMarker';
 
-const bottomSheetRef = useRef<BottomSheet>(null);
 
 
   // callbacks
@@ -41,26 +33,25 @@ const bottomSheetRef = useRef<BottomSheet>(null);
 //   target: WayPoint,
 // }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  map: {
+    width: '100%',
+    height: '100%',
+  },
+});
+
+
 
 function App() {
-
-  const isOpen = useSharedValue(false);
-
-  const toggleSheet = () => {
-    isOpen.value = !isOpen.value;
-  };
-
-  const contentStyle = {
-    color: '#001a72',
-    textDecorationColor: '#001a72'
-  };
-
   useEffect(() => {
     const start = {"lat": 50.072159, "lon": 19.981695};
     const target = {"lat": 50.072159, "lon": 19.981695};
 
-    fetchPointVerboseName(start);
-    toggleSheet();
+    //fetchPointVerboseName(start);
+    //toggleSheet();
     const test = async () => { 
       //console.log({alerts: await fetchAlerts()})
       const data = {
@@ -69,7 +60,7 @@ function App() {
         "lat": 123,
         "lon": 123
       };
-      await createAlert(data);
+      //await createAlert(data);
       //console.log({route: await fetchRoute({start, target})});
       //console.log({point: await fetchPointVerboseName(start)});
     };
@@ -100,6 +91,7 @@ function App() {
 
   return (
     <View style={styles.container}>
+      <TopBar />
       <MapView
         style={styles.map}
         region={region}
@@ -108,44 +100,10 @@ function App() {
         <MapRoute strokeWidth={strokeWidth} coordinates={coordinates}></MapRoute>
         <MapWarningMarker coordinate={{latitude: 50.058411021726435, longitude: 19.93}} />
       </MapView>
-<BottomSheet isOpen={isOpen} toggleSheet={toggleSheet}>
-        <Animated.Text style={contentStyle}>
-          Discover the indispensable convenience of a bottom sheet in mobile
-          app. Seamlessly integrated, it provides quick access to supplementary
-          features and refined details.
-          Discover the indispensable convenience of a bottom sheet in mobile
-          app. Seamlessly integrated, it provides quick access to supplementary
-          features and refined details.
-          Discover the indispensable convenience of a bottom sheet in mobile
-          app. Seamlessly integrated, it provides quick access to supplementary
-          features and refined details.
-          Discover the indispensable convenience of a bottom sheet in mobile
-          app. Seamlessly integrated, it provides quick access to supplementary
-          features and refined details.
-          Discover the indispensable convenience of a bottom sheet in mobile
-          app. Seamlessly integrated, it provides quick access to supplementary
-          features and refined details.
-        </Animated.Text>
-        <View style={styles.buttonContainer}>
-          <Pressable style={[styles.bottomSheetButton]}>
-            <Text style={[styles.bottomSheetButtonTex]}>
-              Read more
-            </Text>
-          </Pressable>
-        </View>
-      </BottomSheet>
+      <ContextMenu />
+      <RoutingOptions />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-});
 
 export default App;
