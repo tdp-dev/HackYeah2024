@@ -53,6 +53,7 @@ function CreateAlert({ coordinates, addNewAlert }) {
 
   async function onCreate() {
     const data = {
+      "id": "new",
       "Name": "another test",
       "Type": selectedType,
       "lat": coordinates.lat,

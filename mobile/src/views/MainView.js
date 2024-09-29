@@ -1,11 +1,13 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { StyleSheet, View, Text, Pressable, SafeAreaView, Image } from 'react-native';
 
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import MapRoute from '../components/MapRoute';
 import { useEffect } from "react";
 import ContextMenu from '../components/ContextMenu';
+import MapMarker from '../components/MapMarker';
 import RoutingOptions from '../components/RoutingOptions';
+import CreateAlert from '../components/CreateAlert';
 import TopBar from '../components/TopBar';
 import { MarkersProvider, useMarkers } from '../components/MarkersProvider';
 import DefaultLayout from '../components/DefaultLayout';
@@ -90,6 +92,12 @@ function MainView() {
     setMarkerPos(null);
   }
 
+  const marker = useMemo(() => {
+    if (markerPos) {
+      return <MapMarker coordinate={{latitude: markerPos.lat, longitude: markerPos.lon}} />
+    }
+  }, [markerPos]);
+
   const coordinates = route.map(coord => ({
     latitude: coord[0]/10,
     longitude: coord[1]/10
@@ -121,16 +129,17 @@ function MainView() {
   return (
     <View style={styles.container}>
       <MapView
+        onLongPress={handleLongPress}
         style={styles.map}
         region={region}
         onRegionChangeComplete={(newRegion) => setRegion(newRegion)} 
         >
-        { !markerPos && <DefaultLayout />}
-        { markerPos && <CreateAlert coordinates={markerPos} addNewAlert={addNewAlert} /> }
+        { marker }
         <MapRoute strokeWidth={strokeWidth} coordinates={coordinates} alerts={alerts}></MapRoute>
-        <MapWarningMarker coordinate={{latitude: 50.058411021726435, longitude: 19.93}} />
-        <RoutingOptions />
       </MapView>
+      { !markerPos && <DefaultLayout />}
+      { markerPos && <CreateAlert coordinates={markerPos} addNewAlert={addNewAlert} /> }
+      <RoutingOptions />
     </View>
   )
 }
