@@ -1,37 +1,12 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { StyleSheet, View, Text, Pressable, SafeAreaView, Image } from 'react-native';
+import MapMarker from './src/components/MapMarker';
+import CreateAlert from './src/components/CreateAlert';
 
 import MapView, { Polyline, Marker } from 'react-native-maps';
 import MapRoute from './src/components/MapRoute';
+import DefaultLayout from "./src/components/DefaultLayout"
 import { useEffect } from "react";
-import ContextMenu from './src/components/ContextMenu';
-import RoutingOptions from './src/components/RoutingOptions';
-import TopBar from './src/components/TopBar';
-
-import {
-  createAlert,
-  fetchAlerts,
-  fetchPointVerboseName,
-  fetchRoute,
-} from "./requests"
-import MapWarningMarker from './src/components/MapWarningMarker';
-
-
-
-  // callbacks
-//const handleSheetChanges = useCallback((index: number) => {
-  //console.log('handleSheetChanges', index);
-//}, []);
-
-// export type WayPoint = {
-//   lat: number;
-//   lon:  number;
-// }
-
-// export interface Params {
-//   start: WayPoint,
-//   target: WayPoint,
-// }
 
 const styles = StyleSheet.create({
   container: {
@@ -46,26 +21,26 @@ const styles = StyleSheet.create({
 
 
 function App() {
-  useEffect(() => {
-    const start = {"lat": 50.072159, "lon": 19.981695};
-    const target = {"lat": 50.072159, "lon": 19.981695};
+  //useEffect(() => {
+    //const start = {"lat": 50.072159, "lon": 19.981695};
+    //const target = {"lat": 50.072159, "lon": 19.981695};
 
-    //fetchPointVerboseName(start);
-    //toggleSheet();
-    const test = async () => { 
-      //console.log({alerts: await fetchAlerts()})
-      const data = {
-        "Name": "another test",
-        "Type": "Danger road",
-        "lat": 123,
-        "lon": 123
-      };
-      //await createAlert(data);
-      //console.log({route: await fetchRoute({start, target})});
-      //console.log({point: await fetchPointVerboseName(start)});
-    };
-    test()
-  }, []);
+    ////fetchPointVerboseName(start);
+    ////toggleSheet();
+    //const test = async () => { 
+      ////console.log({alerts: await fetchAlerts()})
+      //const data = {
+        //"Name": "another test",
+        //"Type": "Danger road",
+        //"lat": 123,
+        //"lon": 123
+      //};
+      ////await createAlert(data);
+      ////console.log({route: await fetchRoute({start, target})});
+      ////console.log({point: await fetchPointVerboseName(start)});
+    //};
+    //test()
+  //}, []);
 
 
 
@@ -76,6 +51,14 @@ function App() {
     longitude: 19.924,
     longitudeDelta: 0.583
   });
+
+  const [markerPos, setMarkerPos] = useState(null);
+
+  const marker = useMemo(() => {
+    if (markerPos) {
+      return <MapMarker coordinate={{latitude: markerPos.lat, longitude: markerPos.lon}} />
+    }
+  }, [markerPos]);
   
   const coordinates = [
     {latitude: 50.058411021726435, longitude: 19.939532831423723},
@@ -89,19 +72,24 @@ function App() {
   const minimalStrokeWidth = 2
   const strokeWidth = 0.03 / region.latitudeDelta > minimalStrokeWidth ? 0.03 / region.latitudeDelta : minimalStrokeWidth
 
+  const handleLongPress = (event) => {
+    const { latitude, longitude } = event.nativeEvent.coordinate;
+    setMarkerPos({ lat: latitude, lon: longitude });
+  };
+
   return (
     <View style={styles.container}>
-      <TopBar />
       <MapView
         style={styles.map}
         region={region}
         onRegionChangeComplete={(newRegion) => setRegion(newRegion)} 
+        onLongPress={handleLongPress}
       >
+        { marker }
         <MapRoute strokeWidth={strokeWidth} coordinates={coordinates}></MapRoute>
-        <MapWarningMarker coordinate={{latitude: 50.058411021726435, longitude: 19.93}} />
       </MapView>
-      <ContextMenu />
-      <RoutingOptions />
+      { !markerPos && <DefaultLayout />}
+      { markerPos && <CreateAlert coordinates={markerPos} /> }
     </View>
   );
 };
