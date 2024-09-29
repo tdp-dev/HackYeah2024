@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { StyleSheet, View, Text, Pressable, SafeAreaView, Image } from 'react-native';
+import { shadow } from "../utils"
 
 const styles = StyleSheet.create({
   container: {
@@ -22,6 +23,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingLeft: 24,
     paddingRight: 24,
+    ...shadow,
   },
   profile: {
     top: -4,

@@ -8,6 +8,12 @@ import ContextMenu from '../components/ContextMenu';
 import RoutingOptions from '../components/RoutingOptions';
 import TopBar from '../components/TopBar';
 import { MarkersProvider, useMarkers } from '../components/MarkersProvider';
+import DefaultLayout from '../components/DefaultLayout';
+
+import {
+  createAlert,
+  fetchAlerts,
+} from "../requests"
 
 
 import MapWarningMarker from '../components/MapWarningMarker';
@@ -71,10 +77,37 @@ function MainView() {
   
   const { route, setRoute } = useMarkers();
 
+  const [markerPos, setMarkerPos] = useState(null);
+  const [alerts, setAlerts] = useState();
+
+  const handleLongPress = (event) => {
+    const { latitude, longitude } = event.nativeEvent.coordinate;
+    setMarkerPos({ lat: latitude, lon: longitude });
+  };
+
+  function addNewAlert(alert) {
+    setAlerts(prev => [...prev, alert]);
+    setMarkerPos(null);
+  }
+
   const coordinates = route.map(coord => ({
     latitude: coord[0]/10,
     longitude: coord[1]/10
   }))
+
+  useEffect(() => {
+    const fetchAndSetAlerts = async () => {
+      try {
+        const fetchedAlerts = await fetchAlerts();
+        console.log({ fetchedAlerts });
+        setAlerts(fetchedAlerts);
+      } catch (error) {
+        console.error("Error fetching alerts:", error);
+      }
+    };
+
+    fetchAndSetAlerts(); // Call the function
+  }, []);
   
   // [{latitude: 10, longitude:10}, {latitude: 50, longitude:50},{"latitude": 50.034119, "longitude": 19.9395}, {"latitude": 50.0679999999999, "longitude": 19.939598}]
   // console.log(coordinates)
@@ -87,17 +120,17 @@ function MainView() {
 
   return (
     <View style={styles.container}>
-      <TopBar />
       <MapView
         style={styles.map}
         region={region}
         onRegionChangeComplete={(newRegion) => setRegion(newRegion)} 
         >
-        <MapRoute strokeWidth={strokeWidth} coordinates={coordinates}></MapRoute>
+        { !markerPos && <DefaultLayout />}
+        { markerPos && <CreateAlert coordinates={markerPos} addNewAlert={addNewAlert} /> }
+        <MapRoute strokeWidth={strokeWidth} coordinates={coordinates} alerts={alerts}></MapRoute>
         <MapWarningMarker coordinate={{latitude: 50.058411021726435, longitude: 19.93}} />
+        <RoutingOptions />
       </MapView>
-      <ContextMenu />
-      <RoutingOptions />
     </View>
   )
 }

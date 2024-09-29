@@ -9,7 +9,7 @@ import Animated, {
 import { StyleSheet, View, Text, Pressable, SafeAreaView, Image } from 'react-native';
 import CustomBtn from "./CustomBtn";
 import { useMarkers } from './MarkersProvider';
-import { fetchRoute } from '../../requests';
+import { fetchRoute } from '../requests';
 
 const styles = StyleSheet.create({
   title: {
