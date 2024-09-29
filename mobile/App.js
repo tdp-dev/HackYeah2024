@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import ContextMenu from './src/components/ContextMenu';
 import RoutingOptions from './src/components/RoutingOptions';
 import TopBar from './src/components/TopBar';
+import { MarkersProvider } from './src/components/MarkersProvider';
 
 import {
   createAlert,
