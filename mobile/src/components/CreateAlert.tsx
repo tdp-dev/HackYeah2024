@@ -48,7 +48,7 @@ const alertTypes = [
   {iconPath: require("../../assets/Package.png"), activeIconPath:  require("../../assets/PackageActive.png"), value: 'package'},
 ]
 
-function CreateAlert({ coordinates }) {
+function CreateAlert({ coordinates, addNewAlert }) {
   const [selectedType, setSelectedType] = useState(null);
 
   async function onCreate() {
@@ -59,6 +59,7 @@ function CreateAlert({ coordinates }) {
       "lon": coordinates.lon
     };
     console.log({ data });
+    addNewAlert(data);
     await createAlert(data);
   }
 
